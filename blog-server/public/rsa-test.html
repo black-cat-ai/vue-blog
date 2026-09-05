@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>RSA加密测试</title>
+</head>
+<body>
+  <h2>RSA加密/登录测试</h2>
+  <div id="status">正在测试...</div>
+  <div id="result" style="white-space:pre-wrap;font-family:monospace;margin-top:10px;"></div>
+  <script src="https://cdn.jsdelivr.net/npm/jsencrypt@3.0.0-rc.1/bin/jsencrypt.min.js"></script>
+  <script>
+    const resultDiv = document.getElementById('result');
+    const statusDiv = document.getElementById('status');
+    function log(msg) { resultDiv.textContent += msg + '\n'; }
+
+    async function test() {
+      try {
+        // Step 1: 获取公钥
+        log('=== Step 1: 获取公钥 ===');
+        const keysRes = await fetch('http://127.0.0.1:3000/keys');
+        const keysData = await keysRes.json();
+        log('公钥响应: ' + JSON.stringify(keysData).substring(0, 100) + '...');
+        const pubKey = keysData.data.pubKey;
+        log('原始公钥长度: ' + pubKey.length);
+        log('原始公钥前50字符: ' + pubKey.substring(0, 50));
+
+        // Step 2: 处理公钥（模拟前端http.js的处理）
+        log('\n=== Step 2: 处理公钥 ===');
+        let processedKey = pubKey;
+        processedKey = processedKey.replace(/\. +/g, '');
+        processedKey = processedKey.replace(/[\r\n]/g, '');
+        log('处理后公钥长度: ' + processedKey.length);
+        log('处理后公钥前80字符: ' + processedKey.substring(0, 80));
+
+        // Step 3: JSEncrypt加密
+        log('\n=== Step 3: JSEncrypt加密 ===');
+        const encrypt = new JSEncrypt();
+        const setResult = encrypt.setPublicKey(processedKey);
+        log('setPublicKey结果: ' + setResult);
+        const testPassword = 'Test1234';
+        const encrypted = encrypt.encrypt(testPassword);
+        log('加密结果: ' + (encrypted ? '成功 (长度: ' + encrypted.length + ')' : '失败 (返回false/null)'));
+        if (encrypted) {
+          log('加密后前40字符: ' + encrypted.substring(0, 40) + '...');
+        }
+
+        if (!encrypted) {
+          log('\n!!! JSEncrypt加密失败 !!!');
+          log('尝试用未处理的公钥...');
+          const encrypt2 = new JSEncrypt();
+          encrypt2.setPublicKey(pubKey);
+          const encrypted2 = encrypt2.encrypt(testPassword);
+          log('未处理公钥加密结果: ' + (encrypted2 ? '成功' : '失败'));
+          statusDiv.textContent = 'JSEncrypt加密失败!';
+          statusDiv.style.color = 'red';
+          return;
+        }
+
+        // Step 4: 发送登录请求
+        log('\n=== Step 4: 发送登录请求 ===');
+        const loginRes = await fetch('http://127.0.0.1:3000/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: 'test123', password: encrypted })
+        });
+        const loginData = await loginRes.json();
+        log('登录状态码: ' + loginRes.status);
+        log('登录响应: ' + JSON.stringify(loginData));
+
+        if (loginRes.status === 200) {
+          statusDiv.textContent = '登录成功!';
+          statusDiv.style.color = 'green';
+          
+          // Step 5: 用token获取用户信息
+          log('\n=== Step 5: 获取用户信息 ===');
+          const userRes = await fetch('http://127.0.0.1:3000/user/', {
+            headers: { 'Authorization': 'Bearer ' + loginData.data.token }
+          });
+          const userData = await userRes.json();
+          log('用户信息: ' + JSON.stringify(userData));
+        } else {
+          statusDiv.textContent = '登录失败: ' + loginData.message;
+          statusDiv.style.color = 'red';
+        }
+      } catch (err) {
+        log('错误: ' + err.message);
+        log('堆栈: ' + err.stack);
+        statusDiv.textContent = '测试出错: ' + err.message;
+        statusDiv.style.color = 'red';
+      }
+    }
+    test();
+  </script>
+</body>
+</html>

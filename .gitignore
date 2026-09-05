@@ -1,0 +1,38 @@
+# 依赖
+node_modules/
+
+# 构建产物
+dist/
+
+# 日志
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 本地环境文件
+.env.local
+.env.*.local
+
+# 编辑器
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# 根目录 Live2D 原始素材（运行所需资源已在 vue-blog/public/Live2D 中）
+/Live2D/
+
+# 压缩包
+*.zip
+
+# 临时测试文件
+blog-server/test-api.js
+blog-server/test-api2.js
+blog-server/test.html

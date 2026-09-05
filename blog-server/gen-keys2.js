@@ -1,0 +1,14 @@
+const NodeRSA = require('node-rsa');
+const fs = require('fs');
+console.log('Starting key generation...');
+const newkey = new NodeRSA({ b: 2048 });
+newkey.setOptions({ encryptionScheme: 'pkcs1' });
+console.log('Key pair generated');
+let public_key = newkey.exportKey('pkcs8-public');
+let private_key = newkey.exportKey('pkcs8-private');
+console.log('Keys exported, pub length:', public_key.length);
+fs.writeFileSync(__dirname + '/auth/public.cer', public_key);
+console.log('Public key written');
+fs.writeFileSync(__dirname + '/auth/private.cer', private_key);
+console.log('Private key written');
+console.log('DONE!');
