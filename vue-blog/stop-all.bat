@@ -6,13 +6,13 @@ echo    Vue Blog 一键关闭脚本
 echo ========================================
 echo.
 
-:: 1. 关闭前端开发服务器 (端口8081)
+:: 1. 关闭前端开发服务器 (端口8080)
 echo [1/3] 关闭前端开发服务器...
-for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":8081" ^| findstr "LISTENING"') do (
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":8080" ^| findstr "LISTENING"') do (
     taskkill /PID %%a /F >nul 2>&1
-    echo       已终止进程 %%a (端口8081)
+    echo       已终止进程 %%a (端口8080)
 )
-netstat -ano | findstr ":8081" | findstr "LISTENING" >nul 2>&1
+netstat -ano | findstr ":8080" | findstr "LISTENING" >nul 2>&1
 if %errorlevel% neq 0 (
     echo       前端开发服务器已关闭
 )

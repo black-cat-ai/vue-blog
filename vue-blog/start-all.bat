@@ -28,27 +28,27 @@ if %errorlevel%==0 (
     echo       后端服务器已在运行
 ) else (
     echo       正在启动后端服务器...
-    start "Blog-Server" cmd /k "cd /d e:\十指波HTML作业\五、VUE作业\20260822_艾春宏_Vue_DAY33\blog-server && node --security-revert=CVE-2023-46809 ./bin/www"
+    start "Blog-Server" cmd /k "cd /d I:\十指波HTML作业\五、VUE作业\20260822_艾春宏_Vue_DAY33\blog-server && node --security-revert=CVE-2023-46809 ./bin/www"
     echo       后端服务器启动中... (等待3秒)
     timeout /t 3 /nobreak >nul
 )
 
 :: 3. 启动前端开发服务器
 echo.
-echo [3/3] 检查前端开发服务器 (端口8081)...
-netstat -ano | findstr ":8081" | findstr "LISTENING" >nul 2>&1
+echo [3/3] 检查前端开发服务器 (端口8080)...
+netstat -ano | findstr ":8080" | findstr "LISTENING" >nul 2>&1
 if %errorlevel%==0 (
     echo       前端开发服务器已在运行
 ) else (
     echo       正在启动前端开发服务器...
-    start "Vue-Blog" cmd /k "cd /d e:\十指波HTML作业\五、VUE作业\20260822_艾春宏_Vue_DAY33\vue-blog && set NODE_OPTIONS=--openssl-legacy-provider && npm run serve"
+    start "Vue-Blog" cmd /k "cd /d I:\十指波HTML作业\五、VUE作业\20260822_艾春宏_Vue_DAY33\vue-blog && set NODE_OPTIONS=--openssl-legacy-provider && npm run serve"
     echo       前端开发服务器启动中... (编译需要约30秒)
 )
 
 echo.
 echo ========================================
 echo    启动完成！
-echo    Frontend: http://localhost:8081
+echo    Frontend: http://localhost:8080
 echo    Backend:  http://127.0.0.1:3000
 echo ========================================
 echo.

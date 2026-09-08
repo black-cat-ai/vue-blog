@@ -1,9 +1,56 @@
 import Vue from 'vue';
-import Vant from 'vant';
+import {
+  Card,
+  Image,
+  Icon,
+  Cell,
+  CellGroup,
+  Empty,
+  Dialog,
+  Tag,
+  Form,
+  Field,
+  NavBar,
+  Button,
+  Search,
+  Divider,
+  ActionSheet,
+  PullRefresh,
+  List,
+  Tabs,
+  Tab,
+  Sticky,
+  Tabbar,
+  TabbarItem,
+  Uploader,
+  Notify
+} from 'vant';
 import 'vant/lib/index.css';
 
 
 
 
-Vue.use(Vant);
-Vue.prototype.$vantNotify = Vant.Notify
+Vue.use(Card);
+Vue.use(Image);
+Vue.use(Icon);
+Vue.use(Cell);
+Vue.use(CellGroup);
+Vue.use(Empty);
+Vue.use(Dialog);
+Vue.use(Tag);
+Vue.use(Form);
+Vue.use(Field);
+Vue.use(NavBar);
+Vue.use(Button);
+Vue.use(Search);
+Vue.use(Divider);
+Vue.use(ActionSheet);
+Vue.use(PullRefresh);
+Vue.use(List);
+Vue.use(Tabs);
+Vue.use(Tab);
+Vue.use(Sticky);
+Vue.use(Tabbar);
+Vue.use(TabbarItem);
+Vue.use(Uploader);
+Vue.prototype.$vantNotify = Notify
