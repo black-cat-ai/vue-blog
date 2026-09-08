@@ -16,16 +16,12 @@ Vue2 + Express + MongoDB 前后端分离博客系统。
 # 1. 启动 MongoDB 服务（Windows）
 net start MongoDB
 
-# 2. 后端 API（端口 3000）
+# 2. 后端 API（端口 3000，聊天服务 8888 随后端自动启动）
 cd blog-server
 npm install
 npm start
 
-# 3. 聊天服务（端口 8888，另开一个终端）
-cd blog-server
-node socket.js
-
-# 4. 前端（端口 8080）
+# 3. 前端（端口 8080）
 cd vue-blog
 npm install
 npm run serve
